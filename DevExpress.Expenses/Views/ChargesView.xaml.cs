@@ -1,0 +1,154 @@
+﻿using DevExpress.Xpf.Map;
+using DevExpress.Mvvm;
+using DevExpress.Mvvm.POCO;
+using Expenses.ViewModel;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+using System.Windows.Shapes;
+
+namespace Expenses.Wpf {
+    /// <summary>
+    /// Interaction logic for ChargesView.xaml
+    /// </summary>
+    public partial class ChargesView : UserControl {
+        public ChargesView() {
+            InitializeComponent();
+            DataContextChanged += OnDataContextChanged;
+        }
+        void OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e) {
+            var newViewModel = e.NewValue as ChargesViewModel;
+            var oldViewModel = e.OldValue as ChargesViewModel;
+
+            if(newViewModel != null) {
+                newViewModel.ViewChargeRequested += OnViewChargeRequested;
+                newViewModel.CreateNewChargeRequested += OnViewChargeRequested;
+            }
+            if(oldViewModel!=null) {
+                oldViewModel.ViewChargeRequested -= OnViewChargeRequested;
+                oldViewModel.CreateNewChargeRequested -= OnViewChargeRequested;
+            }
+        }
+        void OnViewChargeRequested(object sender, EventArgs e) {
+            DevExpress.Mvvm.IDialogService service = ViewChargeDialogService;
+            ChargeViewModel chargeViewModel = (ChargeViewModel)sender;
+
+            List<UICommand> commands = new List<UICommand>();
+            commands.Add(new UICommand(null, "Save and Close", chargeViewModel.SaveChargeCommand, true, false));
+            commands.Add(new UICommand(null, "Cancel", null, false, true));
+
+            service.ShowDialog(commands, "A New Charge", chargeViewModel);
+        }
+        void exportButton_Click(object sender, RoutedEventArgs e) {
+            DevExpress.Mvvm.IDialogService service = ExportDialogService;
+
+            UICommand[] commands = new UICommand[] { new UICommand(null, "Cancel", null, false, true) };
+            service.ShowDialog(commands, "Choose the format you want to export to", ViewModelSource.Create(() => new ExportViewModel(gridControl)));
+        }
+
+        void OnGridControlSelectedItemChanged(object sender, DevExpress.Xpf.Grid.SelectedItemChangedEventArgs e) {
+            BindingExpression exp = map.GetBindingExpression(MapControl.CenterPointProperty);
+            if(exp != null)
+                exp.UpdateTarget();
+        }
+    }
+
+    public class LocationInfo : DependencyObject {
+        public static readonly DependencyProperty LocationProperty;
+        public static readonly DependencyProperty ViewModelProperty;
+        public static readonly DependencyProperty IsVisibleProperty;
+        public static readonly DependencyProperty DataProviderProperty;
+        public static readonly DependencyProperty KeywordProperty;
+        static Dictionary<string, GeoPoint> LocationCache;
+
+        static LocationInfo() {
+            LocationProperty = DependencyProperty.Register("Location", typeof(GeoPoint), typeof(LocationInfo), new PropertyMetadata(null));
+            ViewModelProperty = DependencyProperty.Register("ViewModel", typeof(object), typeof(LocationInfo), new PropertyMetadata(null, OnViewModelChanged));
+            IsVisibleProperty = DependencyProperty.Register("IsVisible", typeof(bool), typeof(LocationInfo), new PropertyMetadata(false));
+            DataProviderProperty = DependencyProperty.Register("DataProvider", typeof(BingSearchDataProvider), typeof(LocationInfo), new PropertyMetadata(null, OnDataProviderChanged));
+            KeywordProperty = DependencyProperty.Register("Keyword", typeof(string), typeof(LocationInfo), new PropertyMetadata(string.Empty, OnKeywordPropertyChanged));
+
+            LocationCache = new Dictionary<string, GeoPoint>();
+        }
+
+        
+        public GeoPoint Location {
+            get { return (GeoPoint)GetValue(LocationProperty); }
+            set { SetValue(LocationProperty, value); }
+        }
+        public object ViewModel {
+            get { return (ChargeViewModel)GetValue(ViewModelProperty); }
+            set { SetValue(ViewModelProperty, value); }
+        }
+        public bool IsVisible {
+            get { return (bool)GetValue(IsVisibleProperty); }
+            set { SetValue(IsVisibleProperty, value); }
+        }
+        public BingSearchDataProvider DataProvider {
+            get { return (BingSearchDataProvider)GetValue(DataProviderProperty); }
+            set { SetValue(DataProviderProperty, value); }
+        }
+        public string Keyword {
+            get { return (string)GetValue(KeywordProperty); }
+            set { SetValue(KeywordProperty, value); }
+        }
+
+        static void OnDataProviderChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
+            ((LocationInfo)d).OnDataProviderChanged((BingSearchDataProvider)e.OldValue, (BingSearchDataProvider)e.NewValue);
+        }
+        static void OnKeywordPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
+            ((LocationInfo)d).OnKeywordChanged((string)e.OldValue);
+        }
+        static void OnViewModelChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
+            ((LocationInfo)d).OnViewModelChaged(e.OldValue);
+        }
+
+        public LocationInfo() { }
+
+        void OnDataProviderChanged(BingSearchDataProvider oldValue, BingSearchDataProvider newValue) {
+            if(oldValue != null)
+                oldValue.SearchCompleted -= OnDataProviderSearchCompleted;
+            if(newValue != null)
+                newValue.SearchCompleted += OnDataProviderSearchCompleted;
+            UpdateLocation();
+        }
+        void OnDataProviderSearchCompleted(object sender, BingSearchCompletedEventArgs e) {
+            IsVisible = !e.Cancelled && e.RequestResult.ResultCode == RequestResultCode.Success;
+            if(IsVisible) {
+                Location = e.RequestResult.SearchRegion.Location;
+                try {
+                    LocationCache.Add(e.RequestResult.Location, Location);
+                } catch {
+                }
+            }
+        }
+        void OnViewModelChaged(object oldValue) { }
+        void UpdateLocation() {
+            if(DataProvider == null || string.IsNullOrEmpty(Keyword)) {
+                IsVisible = false;
+                return;
+            }
+            if(LocationCache.ContainsKey(Keyword)) {
+                IsVisible = true;
+                Location = LocationCache[Keyword];
+            } else {
+                IsVisible = false;
+                DataProvider.Search(Keyword);
+            }
+        }
+        void OnKeywordChanged(string oldValue) {
+            UpdateLocation();
+        }
+
+    }
+}

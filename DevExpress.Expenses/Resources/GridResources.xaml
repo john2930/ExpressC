@@ -1,0 +1,187 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
+                    xmlns:dxgt="http://schemas.devexpress.com/winfx/2008/xaml/grid/themekeys"
+                    xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
+                    xmlns:dxc="http://schemas.devexpress.com/winfx/2008/xaml/core"
+                    xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+                    xmlns:dxet="http://schemas.devexpress.com/winfx/2008/xaml/editors/themekeys"
+                    xmlns:dxeh="http://schemas.devexpress.com/winfx/2008/xaml/editors/internal"
+                    xmlns:local="clr-namespace:Expenses.Wpf">
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="Resources.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+
+    <dxmvvm:DefaultBooleanToBooleanConverter x:Key="DefaultBooleanToBooleanConverter" />
+    
+    <SolidColorBrush x:Key="{dxgt:GridRowThemeKey ResourceKey=GridDataRowDelimiterBrush, ThemeName=TouchlineDark}" Color="{StaticResource RowBorderColor}" />
+
+    <Style TargetType="dxg:SortIndicatorControl">
+        <Setter Property="OverridesDefaultStyle" Value="True"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <Image x:Name="PART_SortIndicator" Source="../Views/Images/Grid/SortUp.png" Width="20" Stretch="None"/>
+                    <ControlTemplate.Triggers>
+                        <DataTrigger Binding="{Binding Path=SortOrder, RelativeSource={RelativeSource Self}}" Value="Descending">
+                            <Setter Property="Source" Value="../Views/Images/Grid/SortDown.png" TargetName="PART_SortIndicator"/>
+                        </DataTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            
+        </Style.Triggers>
+    </Style>
+    
+    <ControlTemplate x:Key="{dxgt:GridColumnHeaderThemeKey ResourceKey=ControlTemplate, ThemeName=TouchlineDark}" TargetType="{x:Type dxg:GridColumnHeaderBase}">
+        <dxg:ColumnHeaderDockPanel x:Name="PART_LayoutPanel" TextElement.Foreground="{StaticResource HeaderForegroundBrush}" ContentMargin="12,5,8,5">
+            <Border x:Name="PART_Border" BorderBrush="{StaticResource HeaderBorderBrush}" Background="{StaticResource HeaderBackgroundBrush}" BorderThickness="0,0,0,1"/>
+        </dxg:ColumnHeaderDockPanel>
+        <ControlTemplate.Triggers>
+            <Trigger Property="ColumnPosition" Value="Standalone">
+                <Setter Property="BorderThickness" Value="1" TargetName="PART_Border"/>
+            </Trigger>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{StaticResource HeaderHoverBrush}" TargetName="PART_Border"/>
+                <Setter Property="TextElement.Foreground" Value="{StaticResource HeaderHoverForegroundBrush}" TargetName="PART_LayoutPanel"/>
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="Background" Value="{StaticResource HeaderPressedBrush}" TargetName="PART_Border"/>
+                <Setter Property="TextElement.Foreground" Value="{StaticResource HeaderPressedForegroundBrush}" TargetName="PART_LayoutPanel"/>
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <local:RowHeightToBrushConverter x:Key="rowHeightToBrushConverter" BackgroundBrush="{StaticResource GridBackgroundColor}" BorderBrush="{StaticResource RowBorderColor}"/>
+    <ControlTemplate x:Key="{dxgt:TableViewThemeKey ResourceKey=DataPresenterTemplate, ThemeName=TouchlineDark}" TargetType="{x:Type dxg:DataPresenter}">
+        <DockPanel Background="{StaticResource GridBackgroundBrush}">
+            <ContentPresenter DockPanel.Dock="Top"/>
+            <Border Background="{Binding Path=(dxg:GridControl.ActiveView).RowMinHeight, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource rowHeightToBrushConverter}}"/>
+        </DockPanel>
+    </ControlTemplate>
+
+    <ControlTemplate x:Key="{dxgt:GridControlThemeKey ResourceKey=BorderTemplate, ThemeName=TouchlineDark}" TargetType="{x:Type ContentControl}">
+        <Grid>
+            <Border Background="{StaticResource GridBorderBrush}" Padding="1">
+                <ContentPresenter />
+            </Border>
+            <Border BorderThickness="0,0,1,0" BorderBrush="{DynamicResource {dxgt:GridRowThemeKey ResourceKey=GridDataRowDelimiterBrush, ThemeName=TouchlineDark}}"
+                    Width="41" HorizontalAlignment="Left" Visibility="{Binding Path=(dxg:GridControl.ActiveView), RelativeSource={RelativeSource TemplatedParent}, Converter={local:ViewToVisibilityConverter}}"/>
+        </Grid>
+    </ControlTemplate>
+
+    <Style x:Key="RowStyle1" TargetType="{x:Type dxg:RowControl}">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Foreground" Value="{StaticResource RowForegroundBrush}" />
+        
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding Path=SelectionState}" Value="Focused">
+                <Setter Property="Background" Value="{StaticResource SelectedRowForegroundBrush}" />
+                <Setter Property="Foreground" Value="White" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Path=SelectionState}" Value="Selected">
+                <Setter Property="Background" Value="Red" />
+                <Setter Property="Foreground" Value="White" />
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="ColumnHeadertyle" TargetType="ContentControl">
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding Path=SortOrder}" Value="None">
+                <Setter Property="Margin" Value="0,0,20,0" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Path=ActualAllowSorting}" Value="False">
+                <Setter Property="Margin" Value="0" />
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style TargetType="dxg:TableView">
+        <Setter Property="ShowIndicator" Value="False"/>
+        <Setter Property="VerticalScrollbarVisibility" Value="Auto"/>
+        <Setter Property="AllowResizing" Value="False"/>
+        <Setter Property="HeaderPanelMinHeight" Value="{Binding Path=RowMinHeight, RelativeSource={RelativeSource Self}}"/>
+        <Setter Property="ShowVerticalLines" Value="False"/>
+        <Setter Property="ShowGroupPanel" Value="False"/>
+        <Setter Property="AutoWidth" Value="True"/>
+        <Setter Property="FadeSelectionOnLostFocus" Value="False"/>
+        <Setter Property="NavigationStyle" Value="Row"/>
+        <Setter Property="AllowColumnFiltering" Value="False"/>
+        <Setter Property="IsColumnMenuEnabled" Value="False"/>
+        <Setter Property="RowStyle" Value="{StaticResource RowStyle1}"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="AllowPerPixelScrolling" Value="True"/>
+        <Setter Property="ColumnHeaderContentStyle" Value="{StaticResource ColumnHeadertyle}"/>
+    </Style>
+
+
+    <ControlTemplate x:Key="headerCheckEditTemplate">
+        <Grid Background="Transparent" Width="36">
+            <Image x:Name="unchecked" Source="../Views/Images/Grid/CheckEditUnchecked.png" Stretch="None" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <Image x:Name="checked" Source="../Views/Images/Grid/CheckEditChecked.png" Stretch="None" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Collapsed"/>
+        </Grid>
+        <ControlTemplate.Triggers>
+            <DataTrigger Binding="{Binding Path=(dxe:BaseEdit.OwnerEdit).IsChecked, RelativeSource={RelativeSource Self}}" Value="True">
+                <Setter Property="Visibility" Value="Collapsed" TargetName="unchecked"/>
+                <Setter Property="Visibility" Value="Visible" TargetName="checked"/>
+            </DataTrigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+    <DataTemplate x:Key="selectAllHeaderTemplate">
+        <dxe:CheckEdit Margin="-9,-2,0,-2" IsChecked="{Binding Path=DataContext.RowSelectionBehavior.IsAllRowsSelected, Mode=TwoWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type dxg:GridColumnHeader}}}"
+                       EditTemplate="{StaticResource headerCheckEditTemplate}" IsEnabled="{Binding Path=DataContext.AllowEditing, Converter={StaticResource DefaultBooleanToBooleanConverter}, Mode=TwoWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type dxg:GridColumnHeader}}}"/>
+    </DataTemplate>
+
+    <ControlTemplate x:Key="cellCheckEditTemplate">
+        <Grid Background="Transparent" Width="36">
+            <Image x:Name="checked" Source="../Views/Images/Grid/CheckEditChecked.png" Stretch="None" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Collapsed"/>
+        </Grid>
+        <ControlTemplate.Triggers>
+            <DataTrigger Binding="{Binding Path=(dxe:BaseEdit.OwnerEdit).IsChecked, RelativeSource={RelativeSource Self}}" Value="True">
+                <Setter Property="Visibility" Value="Visible" TargetName="checked"/>
+            </DataTrigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+    <DataTemplate x:Key="selectAllCellTemplate">
+        <dxe:CheckEdit x:Name="PART_Editor" EditTemplate="{StaticResource cellCheckEditTemplate}" DisplayTemplate="{StaticResource cellCheckEditTemplate}"/>
+    </DataTemplate>
+
+    <DataTemplate x:Key="amountTemplate">
+        <Grid>
+            <TextBlock Text="{Binding Path=Value, StringFormat=c}" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,28,0"/>
+        </Grid>
+    </DataTemplate>
+
+    <Style x:Key="RowStyle2" TargetType="{x:Type dxg:RowControl}">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Foreground" Value="{StaticResource RowForegroundBrush}" />
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding Path=SelectionState}" Value="Focused">
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Path=SelectionState}" Value="Selected">
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+    <Style x:Key="CellStyle" TargetType="{x:Type dxg:LightweightCellEditor}">
+    </Style>
+
+    <Style TargetType="dxg:SelectionView" BasedOn="{StaticResource ResourceKey={x:Type dxg:TableView}}">
+        <Setter Property="AllowSelectionSynchronize" Value="True"/>
+        <Setter Property="DisableStandardSelection" Value="True"/>
+        <Setter Property="NavigationStyle" Value="Cell"/>
+        <Setter Property="AllowEditing" Value="False"/>
+        <Setter Property="RowStyle" Value="{StaticResource RowStyle2}"/>
+        <Setter Property="CellStyle" Value="{StaticResource CellStyle}"/>
+        <Setter Property="FocusedCellBorderTemplate" Value="{x:Null}"/>
+        <Setter Property="FixedLineWidth" Value="0"/>
+    </Style>
+
+    <Style x:Key="{dxet:TextEditThemeKey ResourceKey=TextBlockInplaceStyle, ThemeName=TouchlineDark}" TargetType="{x:Type TextBlock}">
+        <Setter Property="dxeh:EditorMarginHelper.Margin" Value="12,0,12,0,0,0,12,0" />
+    </Style>
+
+</ResourceDictionary>

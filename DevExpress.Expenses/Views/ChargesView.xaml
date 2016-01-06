@@ -1,0 +1,225 @@
+﻿<UserControl
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
+             xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+             xmlns:dxm="http://schemas.devexpress.com/winfx/2008/xaml/map"
+             xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
+             xmlns:dxt="http://schemas.devexpress.com/winfx/2008/xaml/editors/themekeys"
+             xmlns:dxc="http://schemas.devexpress.com/winfx/2008/xaml/charts" 
+             xmlns:dxcrcc="http://schemas.devexpress.com/winfx/2008/xaml/charts/rangecontrolclient" 
+             xmlns:dxgwui="http://schemas.devexpress.com/winfx/2008/xaml/windowsui" 
+             xmlns:expenses="clr-namespace:Expenses.Wpf"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             x:Class="Expenses.Wpf.ChargesView"
+             mc:Ignorable="d" 
+             d:DesignHeight="768" d:DesignWidth="1024">
+    <UserControl.Resources>
+        <sys:String x:Key="BingKey">NO KEY</sys:String>
+        <SolidColorBrush x:Key="mapNavigationControlsBrush" Color="#F0B764"/>
+        <Style TargetType="Button" BasedOn="{StaticResource ActionButtonStyle}">
+            <Setter Property="Foreground" Value="{StaticResource ButtonLinkTextColor}"/>
+            <Setter Property="RenderOptions.BitmapScalingMode" Value="NearestNeighbor"/>
+        </Style>
+        <Style x:Key="PlusButton" TargetType="dxm:MapZoomTrackbarButton">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="dxm:MapZoomTrackbarButton">
+                        <Grid Background="Transparent" Width="29" Height="29">
+                            <Ellipse StrokeThickness="2" Stroke="{StaticResource mapNavigationControlsBrush}"/>
+                            <Rectangle Fill="{StaticResource mapNavigationControlsBrush}" Width="13" Height="2"/>
+                            <Rectangle Fill="{StaticResource mapNavigationControlsBrush}" Width="2" Height="13"/>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="MinusButton" TargetType="dxm:MapZoomTrackbarButton">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="dxm:MapZoomTrackbarButton">
+                        <Grid Background="Transparent" Width="29" Height="29">
+                            <Ellipse StrokeThickness="2" Stroke="{StaticResource mapNavigationControlsBrush}"/>
+                            <Rectangle Fill="{StaticResource mapNavigationControlsBrush}" Width="13" Height="2"/>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="Thumb" TargetType="dxm:MapZoomTrackbarButton">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="dxm:MapZoomTrackbarButton">
+                        <Grid x:Name="grid">
+                            <Rectangle Fill="{StaticResource mapNavigationControlsBrush}"/>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="dxm:MapHorizontalZoomTrackbar">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="dxm:MapHorizontalZoomTrackbar">
+                        <Grid Height="64" Width="{Binding ElementName=map, Path=ActualWidth}" Background="#B0000000">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="64"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="64"/>
+                            </Grid.ColumnDefinitions>
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="FocusStates1">
+                                    <VisualState x:Name="Focused1"/>
+                                    <VisualState x:Name="Unfocused1"/>
+                                </VisualStateGroup>
+                                <VisualStateGroup x:Name="CommonStates1">
+                                    <VisualState x:Name="Normal1"/>
+                                    <VisualState x:Name="MouseOver1"/>
+                                    <VisualState x:Name="Pressed1"/>
+                                    <VisualState x:Name="Disabled1"/>
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                            <dxm:MapZoomTrackbarButton x:Name="PART_ZoomInButton" Grid.Column="2" Style="{StaticResource ResourceKey=PlusButton}"/>
+                            <Border Background="{StaticResource mapNavigationControlsBrush}" VerticalAlignment="Center" Height="2" Grid.Column="1"/>
+                            <dxm:MapZoomTrackbarButton x:Name="PART_ZoomOutButton" Style="{StaticResource ResourceKey=MinusButton}"/>
+                            <Rectangle Grid.Column="1" x:Name="PART_TrackBar" Fill="Transparent"/>
+                            <Grid Grid.Column="1">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <Rectangle Grid.Column="0" Width="{Binding Position, RelativeSource={RelativeSource TemplatedParent}}"/>
+                                <dxm:MapZoomTrackbarButton Style="{StaticResource Thumb}" Grid.Column="1" x:Name="PART_Thumb" Width="2" Height="22" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                            </Grid>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <DataTemplate DataType="{x:Type expenses:LocationInfo}">
+            <StackPanel>
+                <StackPanel.RenderTransform>
+                    <TranslateTransform X="-27" Y="-101"/>
+                </StackPanel.RenderTransform>
+                <Grid HorizontalAlignment="Left" VerticalAlignment="Center">
+                    <Grid.Effect>
+                        <DropShadowEffect Direction="-90" ShadowDepth="8" Opacity="0.5" BlurRadius="12"/>
+                    </Grid.Effect>
+                    <Border Background="White" Margin="0,0,0,27">
+                        <TextBlock Text="{Binding Path=ViewModel.TransactionAmount, StringFormat=C0}" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#FFF06060" FontWeight="Bold" FontSize="40" Margin="20,10" />
+                    </Border>
+                    <Path Stretch="Fill" Fill="White" Data="F1 M 1237,790.501L 1227,818.501L 1228,818.501L 1247,790.501L 1237,790.501 Z " HorizontalAlignment="Left" Height="28" Margin="24,0,0,0" VerticalAlignment="Bottom" Width="20"/>
+                </Grid>
+                <TextBlock Text="{Binding Path=ViewModel.Location}" Foreground="White" FontSize="22" HorizontalAlignment="Left"/>
+            </StackPanel>
+        </DataTemplate>
+    </UserControl.Resources>
+    <dxmvvm:Interaction.Behaviors>
+        <dxgwui:WinUIDialogService x:Name="ExportDialogService" DialogStyle="{StaticResource ExportDialogWindowStyle}" ViewTemplate="{StaticResource ExportDialogContentTemplate}">
+        </dxgwui:WinUIDialogService>
+        <dxgwui:WinUIDialogService x:Name="ViewChargeDialogService" DialogStyle="{StaticResource DialogWindowStyle}">
+            <dxgwui:WinUIDialogService.ViewTemplate>
+                <DataTemplate>
+                    <expenses:ChargeView />
+                </DataTemplate>
+            </dxgwui:WinUIDialogService.ViewTemplate>
+        </dxgwui:WinUIDialogService>
+    </dxmvvm:Interaction.Behaviors>
+    <Grid Margin="70,17,56,65">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="27"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="2*"/>
+        </Grid.ColumnDefinitions>
+        <Grid Margin="0,0,0,12">
+            <Button HorizontalAlignment="Left" Content="CREATE NEW CHARGE" Command="{Binding NewChargeCommand}" ContentTemplate="{StaticResource createNewButtonTemplate}"/>
+            <Button HorizontalAlignment="Right" Content="EXPORT" Click="exportButton_Click" ContentTemplate="{StaticResource exportButtonTemplate}"/>
+        </Grid>
+        <dxg:GridControl Name="gridControl" Grid.Row="1" ItemsSource="{Binding FilteredCharges}" AutoGenerateColumns="None" SelectionMode="Row" SelectedItem="{Binding ElementName=locationInfo, Path=ViewModel, Mode=OneWayToSource}" SelectedItemChanged="OnGridControlSelectedItemChanged">
+            <dxg:GridControl.View>
+                <dxg:TableView RowMinHeight="50">
+                    <dxmvvm:Interaction.Triggers>
+                        <dxmvvm:EventToCommand EventName="RowDoubleClick" Command="{Binding ViewChargeCommand}" CommandParameter="{Binding ElementName=gridControl, Path=SelectedItem}"/>
+                    </dxmvvm:Interaction.Triggers>
+                </dxg:TableView>
+            </dxg:GridControl.View>
+            <dxg:GridControl.Columns>
+                <dxg:GridColumn Header="DATE" FieldName="ExpenseDate" Width="110" FixedWidth="True"/>
+                <dxg:GridColumn Header="DESCRIPTION" FieldName="Description"/>
+                <dxg:GridColumn Header="AMOUNT" FieldName="TransactionAmount" HorizontalHeaderContentAlignment="Right" CellTemplate="{StaticResource amountTemplate}"/>
+                <dxg:GridColumn Header="MERCHANT" FieldName="Merchant"/>
+                <dxg:GridColumn Header="CATEGORY" FieldName="FullCategoryPath"/>
+            </dxg:GridControl.Columns>
+        </dxg:GridControl>
+        <dxe:RangeControl Height="85" Grid.Row="3" ShowRangeBar="False" BorderThickness="0" VerticalAlignment="Bottom"    
+                          RangeStart="{Binding BeginDate}" RangeEnd="{Binding EndDate}" ShowRangeThumbs="False" ShowNavigationButtons="False"
+                          SelectionRangeStart="{Binding SelectionBeginDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                          SelectionRangeEnd="{Binding SelectionEndDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+            <dxe:RangeControl.LabelTemplate>
+                <DataTemplate>
+                    <Border Background="#F06060" MinWidth="70" MinHeight="18" VerticalAlignment="Top" Margin="-15,0,-15,0">
+                        <TextBlock Foreground="White" Text="{Binding}" FontSize="12" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                    </Border>
+                </DataTemplate>
+            </dxe:RangeControl.LabelTemplate>
+            <dxe:RangeControl.Resources>
+                <ControlTemplate x:Key="{dxt:RangeControlThemeKey IsThemeIndependent=True, ResourceKey=BorderTemplate}" TargetType="{x:Type ContentControl}">
+                    <ContentPresenter />
+                </ControlTemplate>
+                <Style x:Key="{dxt:RangeControlThemeKey IsThemeIndependent=True, ResourceKey=OutOfRangeAreaBorderStyle}" TargetType="{x:Type Border}">
+                    <Setter Property="Background" Value="#AA2F2C38" />
+                </Style>
+            </dxe:RangeControl.Resources>
+            
+            <dxcrcc:DateTimeChartRangeControlClient ItemsSource="{Binding Charges}" FontSize="12" ArgumentLabelFormatString="{}{0:MMMM}" ThumbLabelFormatString="{}{0:MMM, dd}"
+                                                 ValueDataMember="BilledAmount" ArgumentDataMember="ExpenseDate" GridLinesBrush="#64C0C0C0" Foreground="{StaticResource ChartTextColor}">
+                <dxcrcc:DateTimeChartRangeControlClient.View>                    
+                    <dxcrcc:RangeControlClientAreaView Brush="#F06060" AreaOpacity="1"/>
+                </dxcrcc:DateTimeChartRangeControlClient.View>
+            </dxcrcc:DateTimeChartRangeControlClient>
+        </dxe:RangeControl>
+        <dxm:MapControl Grid.Row="1" Grid.RowSpan="3" Grid.Column="2" MinZoomLevel="3" ZoomLevel="8" ToolTipEnabled="False" x:Name="map" Margin="40,0,0,16" CenterPoint="{Binding ElementName=locationInfo, Path=Location, Mode=OneWay}" Background="{StaticResource 2F2C38}" IsManipulationEnabled="True">
+            <dxm:ImageTilesLayer>
+                <dxm:ImageTilesLayer.DataProvider>
+                    <dxm:BingMapDataProvider Kind="Area" BingKey="{StaticResource BingKey}"/>
+                </dxm:ImageTilesLayer.DataProvider>
+            </dxm:ImageTilesLayer>
+            <dxm:InformationLayer>
+                <dxm:InformationLayer.DataProvider>
+                    <dxm:BingSearchDataProvider x:Name="bingSearchDataProvider" BingKey="{StaticResource BingKey}" ShowSearchPanel="False" GenerateLayerItems="False"/>
+                </dxm:InformationLayer.DataProvider>
+            </dxm:InformationLayer>
+            <dxm:VectorLayer>
+                <dxm:VectorLayer.DataContext>
+                    <expenses:LocationInfo x:Name="locationInfo" DataProvider="{x:Reference bingSearchDataProvider}" Keyword="{Binding ViewModel.Location, RelativeSource={RelativeSource Mode=Self}}"/>
+                </dxm:VectorLayer.DataContext>
+                <!--<dxm:MapCustomElement x:Name="elem" Visible="{Binding IsVisible}" Location="{Binding Location}" Content="{Binding}"/> -->
+                <dxm:MapItemStorage>
+                    <dxm:MapCustomElement x:Name="elem" Visible="{Binding IsVisible}" Location="{Binding Location}" Content="{Binding}"/>
+                </dxm:MapItemStorage>
+            </dxm:VectorLayer>
+            <dxm:MapControl.ScrollButtonsOptions>
+                <dxm:ScrollButtonsOptions Visible="False"/>
+            </dxm:MapControl.ScrollButtonsOptions>
+            <dxm:MapControl.ZoomTrackbarOptions>
+                <dxm:ZoomTrackbarOptions Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="0" />
+            </dxm:MapControl.ZoomTrackbarOptions>
+            <dxm:MapControl.CoordinatesPanelOptions>
+                <dxm:CoordinatesPanelOptions Visible="False"/>
+            </dxm:MapControl.CoordinatesPanelOptions>
+            <dxm:MapControl.ScalePanelOptions>
+                <dxm:ScalePanelOptions Visible="False"/>
+            </dxm:MapControl.ScalePanelOptions>
+        </dxm:MapControl>
+    </Grid>
+</UserControl>

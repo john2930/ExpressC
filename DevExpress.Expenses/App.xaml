@@ -1,0 +1,598 @@
+﻿<Application x:Class="Expenses.Wpf.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:uc="clr-namespace:Expenses.Wpf"
+             xmlns:vm="clr-namespace:Expenses.ViewModel;assembly=Expenses.ViewModel"
+             xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core" 
+             xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors" 
+             xmlns:dxcontrols="http://schemas.devexpress.com/winfx/2008/xaml/controls" 
+             xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid" 
+             xmlns:dxc="http://schemas.devexpress.com/winfx/2008/xaml/charts" 
+             xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars" 
+             xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm" 
+             xmlns:dxgwui="http://schemas.devexpress.com/winfx/2008/xaml/windowsui"              
+             xmlns:dxgwuit="http://schemas.devexpress.com/winfx/2008/xaml/windowsui/themekeys"  
+             xmlns:dxgwuii="http://schemas.devexpress.com/winfx/2008/xaml/windowsui/internal" 
+             xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol" 
+             xmlns:local="clr-namespace:Expenses.Wpf"
+
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Resources/Resources.xaml"/>
+                <ResourceDictionary Source="Resources/GridResources.xaml"/>
+                <ResourceDictionary Source="Resources/ScrollBarResources.xaml"/>
+                <ResourceDictionary Source="Resources/EditorsResources.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+            <DataTemplate DataType="{x:Type vm:ChargesViewModel}">
+                <uc:ChargesView />
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type vm:ChargeViewModel}">
+                <uc:ChargeView />
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type vm:ExpenseReportsViewModel}">
+                <uc:ExpenseReportsView />
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type vm:EditExpenseReportViewModel}">
+                <uc:EditExpenseReportView />
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type vm:ApproveExpenseReportsViewModel}">
+                <uc:ExpenseReportsView />
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type vm:SummaryItemsViewModel}">
+                <uc:SummaryView />
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type uc:ReportsViewModel}">
+                <uc:ReportsView />
+            </DataTemplate>
+
+            <local:ResourceImageConverter x:Key="ResourceImageConverter"/>
+            <Thickness x:Key="ContentMargin">70,17,70,65</Thickness>
+            <Style TargetType="Label" x:Key="LabelStyle">
+                <Setter Property="Foreground" Value="{StaticResource LabelTextColor}"/>
+                <Setter Property="FontFamily" Value="Segoe UI"/>
+                <Setter Property="FontSize" Value="16"/>
+                <Setter Property="FontWeight" Value="Normal"/>
+                <Setter Property="VerticalAlignment" Value="Center"/>
+            </Style>
+            <Style TargetType="TextBlock" x:Key="ValueStyle">
+                <Setter Property="Foreground" Value="{StaticResource CommonTextColor}"/>
+                <Setter Property="FontFamily" Value="Segoe UI"/>
+                <Setter Property="FontSize" Value="16"/>
+                <Setter Property="FontWeight" Value="Normal"/>
+                <Setter Property="HorizontalAlignment" Value="Right"/>
+                <Setter Property="VerticalAlignment" Value="Center"/>
+            </Style>
+            <Style TargetType="TextBlock" x:Key="HeaderStyle" BasedOn="{StaticResource ValueStyle}">
+                <Setter Property="FontSize" Value="36"/>
+                <Setter Property="HorizontalAlignment" Value="Left"/>
+                <Setter Property="FontFamily" Value="Segoe UI Light"/>
+            </Style>
+            <Style TargetType="TextBlock" x:Key="LiveTileTextLarge" BasedOn="{StaticResource ValueStyle}">
+                <Setter Property="FontSize" Value="22"/>
+                <Setter Property="Foreground" Value="White"/>
+                <Setter Property="HorizontalAlignment" Value="Left"/>
+                <Setter Property="FontFamily" Value="Segoe UI"/>
+            </Style>
+            <Style TargetType="TextBlock" x:Key="LiveTileTextSmall" BasedOn="{StaticResource ValueStyle}">
+                <Setter Property="FontSize" Value="18"/>
+                <Setter Property="Foreground" Value="White"/>
+                <Setter Property="HorizontalAlignment" Value="Left"/>
+                <Setter Property="FontFamily" Value="Segoe UI"/>
+            </Style>
+            <Style TargetType="TextBlock" x:Key="LiveTileTextTiny" BasedOn="{StaticResource ValueStyle}">
+                <Setter Property="FontSize" Value="14"/>
+                <Setter Property="Foreground" Value="White"/>
+                <Setter Property="HorizontalAlignment" Value="Left"/>
+                <Setter Property="FontFamily" Value="Segoe UI"/>
+            </Style>
+
+            <Style TargetType="dxe:TextEdit" x:Key="ValueEditorStyle">
+                <Setter Property="Foreground" Value="{StaticResource CommonTextColor}"/>
+                <Setter Property="FontFamily" Value="Segoe UI"/>
+                <Setter Property="FontSize" Value="16"/>
+                <Setter Property="VerticalAlignment" Value="Center"/>
+            </Style>
+            <Style TargetType="Button" x:Key="ActionButtonStyle">
+                <Setter Property="Cursor" Value="Hand"/>
+                <Setter Property="FontFamily" Value="Segoe UI"/>
+                <Setter Property="FontSize" Value="16"/>
+                <Setter Property="FontWeight" Value="Normal"/>
+                <Setter Property="Foreground" Value="{StaticResource ButtonLinkTextColor}"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="Button">
+                            <ContentPresenter/>
+                        </ControlTemplate>
+                    </Setter.Value>                    
+                </Setter>
+            </Style>
+            <Style x:Key="FocusTemplate" TargetType="{x:Type Border}">
+                <Setter Property="BorderBrush" Value="#FFF78A09" />
+                <Setter Property="BorderThickness" Value="1" />
+            </Style>
+            <Style x:Key="ButtonStyleBase" TargetType="{x:Type ButtonBase}">
+                <Setter Property="FontFamily" Value="Segoe UI"/>
+                <Setter Property="FontWeight" Value="Normal"/>
+                <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+                <Setter Property="Background" Value="{StaticResource DialogButtonBackground}" />
+                <Setter Property="BorderBrush" Value="#FF515151" />
+                <Setter Property="BorderThickness" Value="1" />
+                <Setter Property="Padding" Value="26,10,26,10" />
+                <Setter Property="HorizontalContentAlignment" Value="Center" />
+                <Setter Property="VerticalContentAlignment" Value="Center" />
+                <Setter Property="SnapsToDevicePixels" Value="True" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type ButtonBase}">
+                            <Grid x:Name="Root" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
+                                <Grid x:Name="DefaultState">
+                                    <Border Background="{TemplateBinding BorderBrush}" Padding="1">
+                                        <Border Background="{TemplateBinding Background}" />
+                                    </Border>
+                                </Grid>
+                                <Grid x:Name="HoverState" Opacity="0">
+                                    <Border Background="{StaticResource ButtonHoverBackground}" Padding="1">
+                                        <Border Background="{StaticResource ButtonHoverBackground}" />
+                                    </Border>
+                                </Grid>
+                                <Grid x:Name="FocusState" Opacity="0">
+                                    <Border Style="{StaticResource FocusTemplate}" />
+                                </Grid>
+                                <!--<Grid x:Name="PressedState" Opacity="0">
+                                    <Border Background="{StaticResource ButtonHoverBackground}" Padding="1">
+                                        <Border Background="{StaticResource ButtonHoverBackground}" />
+                                    </Border>
+                                </Grid>-->
+                                <Grid x:Name="CheckedState" Opacity="0">
+                                    <Border Background="{StaticResource F06060}">
+                                    </Border>
+                                </Grid>
+                                <ContentPresenter x:Name="contentPresenter" Margin="{TemplateBinding Padding}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                            </Grid>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="DefaultState" Property="Opacity" Value="0" />
+                                    <Setter TargetName="HoverState" Property="Opacity" Value="1" />
+                                    <!--<Setter TargetName="PressedState" Property="Opacity" Value="0" />-->
+                                    <Setter TargetName="CheckedState" Property="Opacity" Value="0" />
+                                    <Setter Property="Foreground" Value="{StaticResource Brush_2F2C38}" />
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="True">
+                                    <Setter TargetName="DefaultState" Property="Opacity" Value="0" />
+                                    <Setter TargetName="HoverState" Property="Opacity" Value="0.5" />
+                                    <!--<Setter TargetName="PressedState" Property="Opacity" Value="0" />-->
+                                    <Setter TargetName="CheckedState" Property="Opacity" Value="0" />
+                                    <Setter Property="Foreground" Value="{StaticResource Brush_2F2C38}" />
+                                </Trigger>
+                                <Trigger Property="ToggleButton.IsChecked" Value="True">
+                                    <Setter TargetName="DefaultState" Property="Opacity" Value="0" />
+                                    <Setter TargetName="HoverState" Property="Opacity" Value="0" />
+                                    <!--<Setter TargetName="PressedState" Property="Opacity" Value="0" />-->
+                                    <Setter TargetName="CheckedState" Property="Opacity" Value="1" />
+                                    <Setter Property="Foreground" Value="#bfffffff" />
+                                </Trigger>
+                                <Trigger Property="IsFocused" Value="True">
+                                    <Setter TargetName="FocusState" Property="Opacity" Value="1" />
+                                </Trigger>
+                                <!--<Trigger Property="Button.IsDefaulted" Value="True">
+                                    <Setter TargetName="DefaultState" Property="Opacity" Value="0" />
+                                    <Setter TargetName="HoverState" Property="Opacity" Value="1" />
+                                    <Setter TargetName="PressedState" Property="Opacity" Value="0" />
+                                    <Setter TargetName="CheckedState" Property="Opacity" Value="0" />
+                                </Trigger>-->
+                                <Trigger Property="IsEnabled" Value="False">
+                                    <!--<Setter TargetName="Root" Property="Opacity" Value="0.5" />-->
+                                    <Setter Property="Foreground" Value="{StaticResource LabelTextColor}" />
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            <Style x:Key="DialogButtonStyle" TargetType="Button" BasedOn="{StaticResource ButtonStyleBase}">
+                <Setter Property="Foreground" Value="#FFDEA65D"/>
+                <Setter Property="BorderBrush" Value="#FF44424C"/>
+                <Setter Property="FontSize" Value="16"/>
+            </Style>
+            <Style x:Key="DeleteButtonStyle" TargetType="{x:Type Button}">
+                <Setter Property="Foreground" Value="{StaticResource Brush_F06060}"/>
+                <Setter Property="FontSize" Value="16"/>
+                <Setter Property="FontFamily" Value="Segoe UI"/>
+                <Setter Property="FontWeight" Value="Normal"/>
+                <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+                <Setter Property="Background" Value="{StaticResource DialogButtonBackground}" />
+                <Setter Property="BorderBrush" Value="#FF44424C" />
+                <Setter Property="BorderThickness" Value="1" />
+                <Setter Property="Padding" Value="26,10,26,10" />
+                <Setter Property="HorizontalContentAlignment" Value="Center" />
+                <Setter Property="VerticalContentAlignment" Value="Center" />
+                <Setter Property="SnapsToDevicePixels" Value="True" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type ButtonBase}">
+                            <Grid x:Name="Root" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
+                                <Grid x:Name="DefaultState">
+                                    <Border Background="{TemplateBinding BorderBrush}" Padding="1">
+                                        <Border Background="{TemplateBinding Background}" />
+                                    </Border>
+                                </Grid>
+                                <Grid x:Name="HoverState" Opacity="0">
+                                    <Border Background="{StaticResource Brush_F06060}" Padding="1">
+                                        <Border Background="{StaticResource Brush_F06060}" />
+                                    </Border>
+                                </Grid>
+                                <Grid x:Name="FocusState" Opacity="0">
+                                    <Border Style="{StaticResource FocusTemplate}" />
+                                </Grid>
+                                <!--<Grid x:Name="PressedState" Opacity="0">
+                                    <Border Background="{StaticResource Brush_F06060}" Padding="1">
+                                        <Border Background="{StaticResource Brush_F06060}" />
+                                    </Border>
+                                </Grid>-->
+                                <Grid x:Name="CheckedState" Opacity="0">
+                                    <Border Background="{StaticResource F06060}">
+                                    </Border>
+                                </Grid>
+                                <ContentPresenter x:Name="contentPresenter" Margin="{TemplateBinding Padding}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                            </Grid>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="DefaultState" Property="Opacity" Value="0" />
+                                    <Setter TargetName="HoverState" Property="Opacity" Value="1" />
+                                    <!--<Setter TargetName="PressedState" Property="Opacity" Value="0" />-->
+                                    <Setter TargetName="CheckedState" Property="Opacity" Value="0" />
+                                    <Setter Property="Foreground" Value="{StaticResource Brush_2F2C38}" />
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="True">
+                                    <Setter TargetName="DefaultState" Property="Opacity" Value="0" />
+                                    <Setter TargetName="HoverState" Property="Opacity" Value="0.5" />
+                                    <!--<Setter TargetName="PressedState" Property="Opacity" Value="1" />-->
+                                    <Setter TargetName="CheckedState" Property="Opacity" Value="0" />
+                                    <Setter Property="Foreground" Value="{StaticResource Brush_2F2C38}" />
+                                </Trigger>
+                                <Trigger Property="ToggleButton.IsChecked" Value="True">
+                                    <Setter TargetName="DefaultState" Property="Opacity" Value="0" />
+                                    <Setter TargetName="HoverState" Property="Opacity" Value="0" />
+                                    <!--<Setter TargetName="PressedState" Property="Opacity" Value="0" />-->
+                                    <Setter TargetName="CheckedState" Property="Opacity" Value="1" />
+                                    <Setter Property="Foreground" Value="#bfffffff" />
+                                </Trigger>
+                                <Trigger Property="IsFocused" Value="True">
+                                    <Setter TargetName="FocusState" Property="Opacity" Value="1" />
+                                </Trigger>
+                                <!--<Trigger Property="Button.IsDefaulted" Value="True">
+                                    <Setter TargetName="DefaultState" Property="Opacity" Value="0" />
+                                    <Setter TargetName="HoverState" Property="Opacity" Value="1" />
+                                    <Setter TargetName="PressedState" Property="Opacity" Value="0" />
+                                    <Setter TargetName="CheckedState" Property="Opacity" Value="0" />
+                                </Trigger>-->
+                                <Trigger Property="IsEnabled" Value="False">
+                                    <!--<Setter TargetName="Root" Property="Opacity" Value="0.5" />-->
+                                    <Setter Property="Foreground" Value="{StaticResource LabelTextColor}" />
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            <Style x:Key="RadioButtonStyle" TargetType="ToggleButton">
+                <Setter Property="FontFamily" Value="Segoe UI"/>
+                <Setter Property="FontWeight" Value="Normal"/>
+                <Setter Property="Focusable" Value="False"/>
+                <Setter Property="FontSize" Value="16"/>
+                <Setter Property="Foreground" Value="{StaticResource ButtonLinkTextColor}" />
+                <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+                <Setter Property="Background" Value="Transparent" />
+                <Setter Property="BorderBrush" Value="Transparent" />
+                <Setter Property="BorderThickness" Value="1" />
+                <Setter Property="Margin" Value="10,0,0,0" />
+                <Setter Property="Padding" Value="16,5,16,5" />
+                <Setter Property="HorizontalContentAlignment" Value="Center" />
+                <Setter Property="VerticalContentAlignment" Value="Center" />
+                <Setter Property="SnapsToDevicePixels" Value="True" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type ButtonBase}">
+                            <Grid x:Name="Root" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
+                                <Grid x:Name="DefaultState">
+                                    <Border Background="{TemplateBinding BorderBrush}" Padding="1">
+                                        <Border Background="{TemplateBinding Background}" />
+                                    </Border>
+                                </Grid>
+                                <Grid x:Name="HoverState" Opacity="0">
+                                    <Border Background="{StaticResource ButtonHoverBackground}" Padding="1">
+                                        <Border Background="{StaticResource ButtonHoverBackground}" />
+                                    </Border>
+                                </Grid>
+                                <Grid x:Name="FocusState" Opacity="0">
+                                    <Border Style="{StaticResource FocusTemplate}" />
+                                </Grid>
+                                <!--<Grid x:Name="PressedState" Opacity="0">
+                                    <Border Background="{StaticResource ButtonHoverBackground}" Padding="1">
+                                        <Border Background="{StaticResource ButtonHoverBackground}" />
+                                    </Border>
+                                </Grid>-->
+                                <Grid x:Name="CheckedState" Opacity="0">
+                                    <Border Background="{StaticResource F06060}">
+                                    </Border>
+                                </Grid>
+                                <ContentPresenter x:Name="contentPresenter" Margin="{TemplateBinding Padding}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                            </Grid>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="DefaultState" Property="Opacity" Value="0" />
+                                    <Setter TargetName="HoverState" Property="Opacity" Value="1" />
+                                    <!--<Setter TargetName="PressedState" Property="Opacity" Value="0" />-->
+                                    <Setter TargetName="CheckedState" Property="Opacity" Value="0" />
+                                    <Setter Property="Foreground" Value="{StaticResource Brush_2F2C38}" />
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="True">
+                                    <Setter TargetName="DefaultState" Property="Opacity" Value="0" />
+                                    <Setter TargetName="HoverState" Property="Opacity" Value="0.5" />
+                                    <!--<Setter TargetName="PressedState" Property="Opacity" Value="1" />-->
+                                    <Setter TargetName="CheckedState" Property="Opacity" Value="0" />
+                                    <Setter Property="Foreground" Value="{StaticResource Brush_2F2C38}" />
+                                </Trigger>
+                                <Trigger Property="ToggleButton.IsChecked" Value="True">
+                                    <Setter TargetName="DefaultState" Property="Opacity" Value="0" />
+                                    <Setter TargetName="HoverState" Property="Opacity" Value="0" />
+                                    <!--<Setter TargetName="PressedState" Property="Opacity" Value="0" />-->
+                                    <Setter TargetName="CheckedState" Property="Opacity" Value="1" />
+                                    <Setter Property="Foreground" Value="{StaticResource CommonTextColor}" />
+                                </Trigger>
+                                <Trigger Property="IsFocused" Value="True">
+                                    <Setter TargetName="FocusState" Property="Opacity" Value="1" />
+                                </Trigger>
+                                <Trigger Property="Button.IsDefaulted" Value="True">
+                                    <Setter TargetName="DefaultState" Property="Opacity" Value="0" />
+                                    <Setter TargetName="HoverState" Property="Opacity" Value="1" />
+                                    <!--<Setter TargetName="PressedState" Property="Opacity" Value="0" />-->
+                                    <Setter TargetName="CheckedState" Property="Opacity" Value="0" />
+                                </Trigger>
+                                <Trigger Property="IsEnabled" Value="False">
+                                    <Setter TargetName="Root" Property="Opacity" Value="0.5" />
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            <Style x:Key="MoveButtonStyle" TargetType="{x:Type Button}">
+                <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+                <Setter Property="HorizontalContentAlignment" Value="Center" />
+                <Setter Property="VerticalContentAlignment" Value="Center" />
+                <Setter Property="SnapsToDevicePixels" Value="True" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type ButtonBase}">
+                            <Grid x:Name="Root" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" Background="Transparent" Width="44" Height="44">
+                                <Grid x:Name="DefaultState">
+                                    <Image Source="Views\Images\AddArrowLeftNormal.png" Stretch="None"/>
+                                </Grid>
+                                <Grid x:Name="HoverState" Opacity="0" Background="{StaticResource ButtonHoverBackground}">
+                                    <Image Source="Views\Images\AddArrowLeftHover.png" Stretch="None"/>
+                                </Grid>
+                                <Grid x:Name="DiabledState" Opacity="0">
+                                    <Image Source="Views\Images\AddArrowLeftDisabled.png" Stretch="None"/>
+                                </Grid>
+                            </Grid>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="DefaultState" Property="Opacity" Value="0" />
+                                    <Setter TargetName="HoverState" Property="Opacity" Value="1" />
+                                    <Setter TargetName="DiabledState" Property="Opacity" Value="0" />
+                                </Trigger>
+                                <Trigger Property="IsEnabled" Value="False">
+                                    <Setter TargetName="DefaultState" Property="Opacity" Value="0" />
+                                    <Setter TargetName="HoverState" Property="Opacity" Value="0" />
+                                    <Setter TargetName="DiabledState" Property="Opacity" Value="1" />
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="True">
+                                    <Setter TargetName="DefaultState" Property="Opacity" Value="0" />
+                                    <Setter TargetName="HoverState" Property="Opacity" Value="0.5" />
+                                    <Setter TargetName="DiabledState" Property="Opacity" Value="0" />
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            <Style TargetType="dxgwuii:BackButton">
+                <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+                <Setter Property="HorizontalContentAlignment" Value="Center" />
+                <Setter Property="VerticalContentAlignment" Value="Center" />
+                <Setter Property="SnapsToDevicePixels" Value="True" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type ButtonBase}">
+                            <Grid x:Name="Root" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" Background="Transparent" Width="52" Height="52">
+                                <Grid x:Name="DefaultState">
+                                    <Image Source="Views\Images\BackButtonNormal.png" Stretch="None"/>
+                                </Grid>
+                                <Grid x:Name="HoverState" Opacity="0">
+                                    <Image Source="Views\Images\BackButtonHover.png" Stretch="None"/>
+                                </Grid>
+                                <Grid x:Name="PressedState" Opacity="0">
+                                    <Image Source="Views\Images\BackButtonPressed.png" Stretch="None"/>
+                                </Grid>
+                            </Grid>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="DefaultState" Property="Opacity" Value="0" />
+                                    <Setter TargetName="HoverState" Property="Opacity" Value="1" />
+                                    <Setter TargetName="PressedState" Property="Opacity" Value="0" />
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="True">
+                                    <Setter TargetName="DefaultState" Property="Opacity" Value="0" />
+                                    <Setter TargetName="HoverState" Property="Opacity" Value="0" />
+                                    <Setter TargetName="PressedState" Property="Opacity" Value="1" />
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            <SolidColorBrush x:Key="{dxgwuit:MessageBoxElementsThemeKey IsThemeIndependent=True, ResourceKey=Background}" Color="#C0000000" />
+            
+            <Style TargetType="dxgwui:WinUIDialogWindow" x:Key="ExportDialogWindowStyle">
+                    <Setter Property="BorderThickness" Value="0,2,0,2"/>
+                    <Setter Property="BorderBrush" Value="#FFF3B562"/>
+                    <Setter Property="Background" Value="{StaticResource 2F2C38}"/>
+                    <Setter Property="dxmvvm:WindowFadeAnimationBehavior.EnableAnimation" Value="True"/>
+                    <Setter Property="CommandButtonsPanel">
+                        <Setter.Value>
+                            <ItemsPanelTemplate>
+                            <StackPanel Margin="0,70,0,20" Focusable="False" HorizontalAlignment="Center" Orientation="Horizontal"/>
+                            </ItemsPanelTemplate>
+                        </Setter.Value>
+                    </Setter>
+                    <Setter Property="CommandButtonStyle">
+                        <Setter.Value>
+                        <Style TargetType="Button" BasedOn="{StaticResource DialogButtonStyle}">
+                                <Setter Property="Width" Value="160"/>
+                                <Setter Property="Margin" Value="10,0,0,0"/>
+                            </Style>
+                        </Setter.Value>
+                    </Setter>
+                <Setter Property="TitleStyle">
+                    <Setter.Value>
+                        <Style TargetType="ContentControl">
+                            <Setter Property="HorizontalAlignment" Value="Center"/>
+                            <Setter Property="Margin" Value="0,25,0,30"/>
+                            <Setter Property="ContentTemplate">
+                                <Setter.Value>
+                                    <DataTemplate>
+                                        <dxe:TextEdit EditMode="Standalone"
+                                                          ShowBorder="False"
+                                                          EditValue="{Binding Mode=OneWay}"
+                                                          IsReadOnly="True"
+                                                          MaxWidth="{x:Static SystemParameters.MaximizedPrimaryScreenWidth}"
+                                                          FontSize="26"
+                                                          BorderBrush="Transparent"
+                                                          BorderThickness="0" 
+                                                          FontWeight="Light"
+                                                          Background="Transparent"
+                                                          TextWrapping="NoWrap" 
+                                                          HorizontalAlignment="Center"
+                                                          Foreground="White"/>
+                                    </DataTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            <DataTemplate x:Key="ExportDialogContentTemplate">
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Top" SnapsToDevicePixels="True" UseLayoutRounding="True">
+                    <StackPanel.Resources>
+                        <Style TargetType="dxlc:Tile">
+                            <Setter Property="Cursor" Value="Hand"/>
+                            <Setter Property="BorderThickness" Value="0"/>
+                            <Setter Property="BorderBrush" Value="{x:Null}"/>
+                            <Setter Property="Margin" Value="16,0,16,0"/>
+                            <Setter Property="Width" Value="200"/>
+                            <Setter Property="Height" Value="250"/>
+                            <Setter Property="Padding" Value="0"/>
+                            <Setter Property="ContentTemplate">
+                                <Setter.Value>
+                                    <DataTemplate>
+                                        <Image Stretch="None" RenderOptions.BitmapScalingMode="NearestNeighbor" Source="{Binding Converter={StaticResource ResourceImageConverter}}"/>
+                                    </DataTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </StackPanel.Resources>
+                    <dxmvvm:Interaction.Behaviors>
+                        <dxmvvm:CurrentWindowService/>
+                    </dxmvvm:Interaction.Behaviors>
+                    <dxlc:Tile Background="Transparent" Command="{Binding ExportCommand}" CommandParameter="Xls" Content="ExportXLS.png"/>
+                    <dxlc:Tile Background="Transparent" Command="{Binding ExportCommand}" CommandParameter="Xps" Content="ExportXPS.png"/>
+                    <dxlc:Tile Background="Transparent" Command="{Binding ExportCommand}" CommandParameter="Pdf" Content="ExportPDF.png"/>
+                </StackPanel>
+            </DataTemplate>
+
+            <Style TargetType="dxgwui:WinUIDialogWindow" x:Key="DialogWindowStyle">
+                <Setter Property="BorderThickness" Value="0,2,0,2"/>
+                <Setter Property="BorderBrush" Value="#FFF3B562"/>
+                <Setter Property="Background" Value="{StaticResource 2F2C38}"/>
+                <Setter Property="dxmvvm:WindowFadeAnimationBehavior.EnableAnimation" Value="True"/>
+                <Setter Property="CommandButtonsPanel">
+                    <Setter.Value>
+                        <ItemsPanelTemplate>
+                            <StackPanel Margin="0,45,0,20" 
+Focusable="False" HorizontalAlignment="Right" Orientation="Horizontal"/>
+                        </ItemsPanelTemplate>
+                    </Setter.Value>
+                </Setter>
+                
+                <Setter Property="CommandButtonStyle">
+                    <Setter.Value>
+                        <Style TargetType="Button" BasedOn="{StaticResource DialogButtonStyle}">
+                            <Setter Property="Width" Value="160"/>
+                            <Setter Property="Margin" Value="10,0,0,0"/>
+                        </Style>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="TitleStyle">
+                    <Setter.Value>
+                        <Style TargetType="ContentControl">
+                            <Setter Property="HorizontalAlignment" 
+Value="Left"/>
+                            <Setter Property="Margin" 
+Value="0,20,0,8"/>
+                            <Setter Property="ContentTemplate">
+                                <Setter.Value>
+                                    <DataTemplate>
+                                        <dxe:TextEdit 
+EditMode="Standalone" ShowBorder="False" EditValue="{Binding Mode=OneWay}"
+IsReadOnly="True" MaxWidth="{x:Static 
+SystemParameters.MaximizedPrimaryScreenWidth}"
+FontSize="28" BorderBrush="Transparent" BorderThickness="0" 
+FontWeight="Light"
+Background="Transparent" TextWrapping="NoWrap" 
+HorizontalAlignment="Left" Foreground="White"/>
+                                    </DataTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            <DataTemplate x:Key="createNewButtonTemplate">
+                <StackPanel Orientation="Horizontal">
+                    <Image Name="img" Source="/DevExpress.Expenses;component/Views/Images/AddButtonNormal.png" Margin="0,0,8,0"/>
+                    <TextBlock Name="txtBlock" Text="{Binding}" VerticalAlignment="Center"/>
+                </StackPanel>
+                <DataTemplate.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter TargetName="img" Property="Source" Value="/DevExpress.Expenses;component/Views/Images/AddButtonHover.png"/>
+                        <Setter TargetName="txtBlock" Property="Foreground" Value="{StaticResource CommonTextColor}"/>
+                    </Trigger>
+                </DataTemplate.Triggers>
+            </DataTemplate>
+            <DataTemplate x:Key="viewButtonTemplate">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Name="txtBlock" Text="{Binding}" VerticalAlignment="Center"/>
+                </StackPanel>
+                <DataTemplate.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter TargetName="txtBlock" Property="Foreground" Value="{StaticResource CommonTextColor}"/>
+                    </Trigger>
+                </DataTemplate.Triggers>
+            </DataTemplate>
+            <DataTemplate x:Key="exportButtonTemplate">
+                <StackPanel Orientation="Horizontal">
+                    <Image Name="img" Source="/DevExpress.Expenses;component/Views/Images/ExportButtonNormal.png" Margin="0,0,8,0"/>
+                    <TextBlock Name="txtBlock" Text="{Binding}" VerticalAlignment="Center"/>
+                </StackPanel>
+                <DataTemplate.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter TargetName="img" Property="Source" Value="/DevExpress.Expenses;component/Views/Images/ExportButtonHover.png"/>
+                        <Setter TargetName="txtBlock" Property="Foreground" Value="{StaticResource CommonTextColor}"/>
+                    </Trigger>
+                </DataTemplate.Triggers>
+            </DataTemplate>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

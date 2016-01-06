@@ -1,0 +1,344 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{E1AFDF57-D994-46C3-8DF4-3FFD7E942D2F}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>DevExpress.Expenses</RootNamespace>
+    <AssemblyName>DevExpress.Expenses</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Resources\demoicon.ico</ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="DevExpress.Data.v15.2">
+    </Reference>
+    <Reference Include="DevExpress.Mvvm.v15.2, Version=15.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      
+    </Reference>
+    <Reference Include="DevExpress.Xpf.Themes.TouchlineDark.v15.2">
+    </Reference>
+    <Reference Include="DevExpress.XtraBars.v15.2">
+    </Reference>
+    <Reference Include="DevExpress.Map.v15.2.Core">
+    </Reference>
+    <Reference Include="DevExpress.Xpf.Controls.v15.2">
+    </Reference>
+    <Reference Include="DevExpress.Xpf.Core.v15.2">
+    </Reference>
+    <Reference Include="DevExpress.Xpf.Docking.v15.2">
+    </Reference>
+    <Reference Include="DevExpress.Charts.v15.2.Core">
+    </Reference>
+    <Reference Include="DevExpress.Printing.v15.2.Core">
+    </Reference>
+    <Reference Include="DevExpress.Xpf.Grid.v15.2.Extensions">
+    </Reference>
+    <Reference Include="DevExpress.Xpf.Printing.v15.2">
+    </Reference>
+    <Reference Include="DevExpress.Xpf.Charts.v15.2">
+    </Reference>
+    <Reference Include="DevExpress.Xpf.Grid.v15.2">
+    </Reference>
+    <Reference Include="DevExpress.Xpf.Grid.v15.2.Core">
+    </Reference>
+    <Reference Include="DevExpress.Xpf.LayoutControl.v15.2">
+    </Reference>
+    <Reference Include="DevExpress.Xpf.Map.v15.2">
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Data.Services.Client" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Windows" />
+    <Reference Include="System.Windows.Controls.Ribbon" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="UIAutomationProvider" />
+    <Reference Include="UIAutomationTypes" />
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Compile Include="Converters\GridConverters.cs" />
+    <Compile Include="Converters\ResourceImageConverter.cs" />
+    <Compile Include="Converters\ToUpperConverter.cs" />
+    <Compile Include="Helpers\ResourceImageHelper.cs" />
+    <Compile Include="Services\NavigationService.cs" />
+    <Compile Include="Services\ViewService.cs" />
+    <Compile Include="ViewModels\LogInControlViewModel.cs" />
+    <Compile Include="ViewModels\MainWindowViewModel.cs" />
+    <Compile Include="ViewModels\ReportsViewModel.cs" />
+    <Compile Include="ViewModels\SysButtonViewModel.cs" />
+    <Compile Include="Views\AddChargesView.xaml.cs">
+      <DependentUpon>AddChargesView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ApproveExpenseReportsView.xaml.cs">
+      <DependentUpon>ApproveExpenseReportsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ChargesView.xaml.cs">
+      <DependentUpon>ChargesView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ChargeView.xaml.cs">
+      <DependentUpon>ChargeView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\EditExpenseReportView.xaml.cs">
+      <DependentUpon>EditExpenseReportView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ExpenseReportChargesView.xaml.cs">
+      <DependentUpon>ExpenseReportChargesView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ExpenseReportsView.xaml.cs">
+      <DependentUpon>ExpenseReportsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ExpenseReportView.xaml.cs">
+      <DependentUpon>ExpenseReportView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\LiveTileLarge.xaml.cs">
+      <DependentUpon>LiveTileLarge.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\LiveTileSmall.xaml.cs">
+      <DependentUpon>LiveTileSmall.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\LogInControl.xaml.cs">
+      <DependentUpon>LogInControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ReportsView.xaml.cs">
+      <DependentUpon>ReportsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SummaryView.xaml.cs">
+      <DependentUpon>SummaryView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Behaviors\SelectedItemsBehavior.cs" />
+    <Compile Include="Converters\InverseBooleanConverter.cs" />
+    <Compile Include="Views\ViewExpenseReportView.xaml.cs">
+      <DependentUpon>ViewExpenseReportView.xaml</DependentUpon>
+    </Compile>
+    <Page Include="Resources\EditorsResources.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\GridResources.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\Resources.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\ScrollBarResources.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\AddChargesView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\ApproveExpenseReportsView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\ChargesView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\ChargeView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\EditExpenseReportView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\ExpenseReportChargesView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\ExpenseReportsView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\ExpenseReportView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\LiveTileLarge.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\LiveTileSmall.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\LogInControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\ReportsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SummaryView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\ViewExpenseReportView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Expenses.Model\Expenses.Model.csproj">
+      <Project>{5d311296-fc23-4cd7-941c-8bb55301ab57}</Project>
+      <Name>Expenses.Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Expenses.ViewModel\Expenses.ViewModel.csproj">
+      <Project>{600513e6-b6d4-4fa8-b11c-7ae980551257}</Project>
+      <Name>Expenses.ViewModel</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Views\Images\Grid\CheckEditChecked.png" />
+    <Resource Include="Views\Images\Grid\CheckEditUnchecked.png" />
+    <Resource Include="Views\Images\Grid\SortDown.png" />
+    <Resource Include="Views\Images\Grid\SortUp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Views\Images\AddArrowLeftDisabled.png" />
+    <Resource Include="Views\Images\AddArrowLeftHover.png" />
+    <Resource Include="Views\Images\AddArrowLeftNormal.png" />
+    <Resource Include="Views\Images\AddArrowRightDisabled.png" />
+    <Resource Include="Views\Images\AddArrowRightHover.png" />
+    <Resource Include="Views\Images\AddArrowRightNormal.png" />
+    <Resource Include="Views\Images\BackButtonHover.png" />
+    <Resource Include="Views\Images\BackButtonNormal.png" />
+    <Resource Include="Views\Images\BackButtonPressed.png" />
+    <Resource Include="Views\Images\DateEditButton.png" />
+    <Resource Include="Views\Images\DropDownButton.png" />
+    <Resource Include="Views\Images\WindowCloseButtonHover.png" />
+    <Resource Include="Views\Images\WindowCloseButtonNormal.png" />
+    <Resource Include="Views\Images\WindowMaxButtonHover.png" />
+    <Resource Include="Views\Images\WindowMaxButtonNormal.png" />
+    <Resource Include="Views\Images\WindowMinButtonHover.png" />
+    <Resource Include="Views\Images\WindowMinButtonNormal.png" />
+    <Resource Include="Views\Images\WindowRestoreButtonHover.png" />
+    <Resource Include="Views\Images\WindowRestoreButtonNormal.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Views\Images\AddButtonHover.png" />
+    <Resource Include="Views\Images\AddButtonNormal.png" />
+    <Resource Include="Views\Images\ExportButtonHover.png" />
+    <Resource Include="Views\Images\ExportButtonNormal.png" />
+    <Resource Include="Views\Images\ExportPDF.png" />
+    <Resource Include="Views\Images\ExportXLS.png" />
+    <Resource Include="Views\Images\ExportXPS.png" />
+    <Resource Include="Views\Images\LargeArrowButtonHover.png" />
+    <Resource Include="Views\Images\LargeArrowButtonNormal.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\demoicon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Views\Images\Live-Tile.png" />
+    <Resource Include="Views\Images\Live-Tile-Hover.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\Images\DefaultTileLarge.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Views\Images\LiveTileIcon.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

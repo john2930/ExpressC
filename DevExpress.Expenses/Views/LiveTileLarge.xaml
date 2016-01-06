@@ -1,0 +1,14 @@
+﻿<local:LiveTileBase x:Class="Expenses.Wpf.LiveTileLarge"
+                    xmlns:local="clr-namespace:Expenses.Wpf"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             Width="248" Height="120" x:Name="root">
+    <Grid Background="{StaticResource Brush_F06060}">
+        <Image HorizontalAlignment="Left" Source="Images\LiveTileIcon.png" Margin="14,10,0,0" VerticalAlignment="Top" Stretch="Fill" Width="60" Height="60"/>
+        <TextBlock Style="{StaticResource LiveTileTextLarge}" Margin="88,12,0,79" Text="{Binding Label1, ElementName=root}"/>
+        <TextBlock Style="{StaticResource LiveTileTextSmall}" Margin="88,41,0,55" Text="{Binding Amount, StringFormat=C0, ElementName=root}"></TextBlock>
+    </Grid>
+</local:LiveTileBase>

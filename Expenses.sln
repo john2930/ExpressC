@@ -1,0 +1,48 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevExpress.Expenses", "DevExpress.Expenses\DevExpress.Expenses.csproj", "{E1AFDF57-D994-46C3-8DF4-3FFD7E942D2F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Expenses.ViewModel", "Expenses.ViewModel\Expenses.ViewModel.csproj", "{600513E6-B6D4-4FA8-B11C-7AE980551257}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Expenses.Model", "Expenses.Model\Expenses.Model.csproj", "{5D311296-FC23-4CD7-941C-8BB55301AB57}"
+EndProject
+Global
+	GlobalSection(SourceCodeControl) = preSolution
+		SccNumberOfProjects = 3
+		SccProjectUniqueName0 = DevExpress.Expenses\\DevExpress.Expenses.csproj
+		SccProjectName0 = \u0022$/2013.2/Demos.RealLife/DevExpress.Expenses/DevExpress.Expenses\u0022
+		SccLocalPath0 = DevExpress.Expenses
+		SccProvider0 = MSSCCI:DXVCS
+		SccProjectUniqueName1 = Expenses.ViewModel\\Expenses.ViewModel.csproj
+		SccProjectName1 = \u0022$/2013.2/Demos.RealLife/DevExpress.Expenses/Expenses.ViewModel\u0022
+		SccLocalPath1 = Expenses.ViewModel
+		SccProvider1 = MSSCCI:DXVCS
+		SccProjectUniqueName2 = Expenses.Model\\Expenses.Model.csproj
+		SccProjectName2 = \u0022$/2013.2/Demos.RealLife/DevExpress.Expenses/Expenses.Model\u0022
+		SccLocalPath2 = Expenses.Model
+		SccProvider2 = MSSCCI:DXVCS
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E1AFDF57-D994-46C3-8DF4-3FFD7E942D2F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E1AFDF57-D994-46C3-8DF4-3FFD7E942D2F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E1AFDF57-D994-46C3-8DF4-3FFD7E942D2F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E1AFDF57-D994-46C3-8DF4-3FFD7E942D2F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{600513E6-B6D4-4FA8-B11C-7AE980551257}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{600513E6-B6D4-4FA8-B11C-7AE980551257}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{600513E6-B6D4-4FA8-B11C-7AE980551257}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{600513E6-B6D4-4FA8-B11C-7AE980551257}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5D311296-FC23-4CD7-941C-8BB55301AB57}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5D311296-FC23-4CD7-941C-8BB55301AB57}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5D311296-FC23-4CD7-941C-8BB55301AB57}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5D311296-FC23-4CD7-941C-8BB55301AB57}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

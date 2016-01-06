@@ -1,0 +1,30 @@
+﻿<UserControl x:Class="Expenses.Wpf.ViewExpenseReportView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:expenses="clr-namespace:Expenses.Wpf"
+             mc:Ignorable="d" 
+             d:DesignHeight="1024" d:DesignWidth="768" Width="740">
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+        <expenses:InverseBooleanConverter x:Key="InverseBooleanConverter" />
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="115" />
+            <RowDefinition Height="40" />
+            <RowDefinition Height="152" />
+            <RowDefinition Height="50" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <expenses:ExpenseReportView />
+        <Label Content="ASSOCIATED CHARGES" Grid.Row="1" Style="{StaticResource LabelStyle}"/>
+        <expenses:ExpenseReportChargesView Grid.Row="2" NavigationStyle="None" />
+
+        <Label Margin="-5,0,0,0" Content="NOTES" VerticalAlignment="Bottom" Grid.Row="3" Style="{StaticResource LabelStyle}"/>
+        <TextBlock Grid.Row="4" HorizontalAlignment="Left" Text="{Binding ExpenseReport.Notes}" Style="{StaticResource ValueStyle}"> </TextBlock>
+    </Grid>
+</UserControl>

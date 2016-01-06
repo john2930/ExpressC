@@ -1,0 +1,56 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    
+    
+    <SolidColorBrush x:Key="ButtonLinkTextColor" Color="#FFF3B562"/>
+    <SolidColorBrush x:Key="ButtonHoverBackground" Color="#FFF3B562"/>
+    <SolidColorBrush x:Key="WhiteTextColor" Color="White"/>
+    <SolidColorBrush x:Key="CommonTextColor" Color="#FFE8E8E9"/>
+    <SolidColorBrush x:Key="ChartTextColor" Color="#FFBEBEC0"/>
+    <SolidColorBrush x:Key="GridHeadersTextColor" Color="#FF787485"/>
+    <SolidColorBrush x:Key="LabelTextColor" Color="#FF787485"/>
+
+
+    <SolidColorBrush x:Key="Brush_8CBEBD" Color="#FF8CBEBD"/>
+    <SolidColorBrush x:Key="Brush_2F2C38" Color="#FF2F2C38"/>
+    <SolidColorBrush x:Key="Brush_FFFFFF" Color="#FFFFFFFF"/>
+    <SolidColorBrush x:Key="Brush_3F3C4B" Color="#FF3F3C4B"/>
+    <SolidColorBrush x:Key="Brush_F2EBBF" Color="#FFF2EBBF"/>
+    <SolidColorBrush x:Key="Brush_F06060" Color="#FFF06060"/>
+    <SolidColorBrush x:Key="Brush_F3B562" Color="#FFF3B562"/>
+    <SolidColorBrush x:Key="Brush_4E4B56" Color="#FF4E4B56"/>
+
+    <SolidColorBrush x:Key="68A0A4" Color="#FF68A0A4"/>
+    <SolidColorBrush x:Key="E0F8F4" Color="#FFE0F8F4"/>
+    <SolidColorBrush x:Key="F7CD7F" Color="#FFF7CD7F"/>
+    <SolidColorBrush x:Key="F3B562" Color="#FFF3B562"/>
+    <SolidColorBrush x:Key="EE9C44" Color="#FFEE9C44"/>        
+    <SolidColorBrush x:Key="2F2C38" Color="#FF2F2C38"/>            
+    <SolidColorBrush x:Key="E9DD96" Color="#FFE9DD96"/>
+    <SolidColorBrush x:Key="F2EBBF" Color="#FFF2EBBF"/>
+    <SolidColorBrush x:Key="F78686" Color="#FFF78686"/>
+    <SolidColorBrush x:Key="F06060" Color="#FFF06060"/>
+
+    <SolidColorBrush x:Key="DialogButtonBackground" Color="#FF373340"/>
+
+    <SolidColorBrush x:Key="GridBorderBrush" Color="#FF4E4B56"/>
+    <Color x:Key="GridBackgroundColor">#FF2F2C38</Color>
+    <SolidColorBrush x:Key="GridBackgroundBrush" Color="{StaticResource GridBackgroundColor}"/>
+    <Color x:Key="RowBorderColor">#FF44424C</Color>
+    <SolidColorBrush x:Key="RowForegroundBrush" Color="#FFE7E7E8"/>
+    <SolidColorBrush x:Key="SelectedRowForegroundBrush" Color="#FFF06060"/>
+    <SolidColorBrush x:Key="HeaderBorderBrush" Color="#FF4E4B56"/>
+    <SolidColorBrush x:Key="HeaderBackgroundBrush" Color="#FF373442"/>
+    <SolidColorBrush x:Key="HeaderForegroundBrush" Color="#FF75737C"/>
+    <SolidColorBrush x:Key="HeaderHoverBrush" Color="#FF3F3C4B"/>
+    <SolidColorBrush x:Key="HeaderHoverForegroundBrush" Color="#FFFFFFFF"/>
+    <SolidColorBrush x:Key="HeaderPressedBrush" Color="#FF33303D"/>
+    <SolidColorBrush x:Key="HeaderPressedForegroundBrush" Color="#FF5A5665"/>
+    <SolidColorBrush x:Key="ScrollBarBorder" Color="#FF504C57" />
+    <SolidColorBrush x:Key="ScrollBarBorderHover" Color="#bfffffff" />
+    <SolidColorBrush x:Key="ScrollBarBorderDragging" Color="#FF504C57" />
+
+    <SolidColorBrush x:Key="ScrollBarBackground" Color="#FF332F3B"/>
+    <SolidColorBrush x:Key="ScrollBarBorderBrush" Color="#FF504C57"/>
+    
+</ResourceDictionary>
